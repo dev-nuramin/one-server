@@ -3,6 +3,7 @@ import colors from "colors";
 import dotenv from "dotenv";
 import studentsRoutes from "./routes/studentRoutes.js";
 import mongoDBconnect from "./config/db.js"
+import errorHandler from "./middlewares/errorHandler.js";
 
 
 // iitilize dotenv & express
@@ -19,6 +20,10 @@ app.use(express.urlencoded({extended: false}));
 const PORT = process.env.SERVER_PORT || 5000;
 
 app.use("/api/students", studentsRoutes);
+
+// express error handler
+app.use(errorHandler)
+    
 
 //app listner;
 app.listen( PORT, () => {

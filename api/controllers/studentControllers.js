@@ -9,7 +9,7 @@
 
 // Import necessary modules
 import Student from "../models/Student.js";
-
+import bcrypt from "bcryptjs";
 /**
  * @function getAllStudent
  * @description Retrieves all student records from the database.
@@ -17,12 +17,12 @@ import Student from "../models/Student.js";
  * @route /api/students
  */
 
-export const getAllStudents = async (req, res) => {
+export const getAllStudents = async (req, res, next) => {
   try {
     const student = await Student.find();
     res.status(200).json(student);
   } catch (error) {
-    console.log(error);
+    next(error)
   }
 };
 
@@ -34,11 +34,23 @@ export const getAllStudents = async (req, res) => {
  */
 
 export const createStudent = async (req, res) => {
-  const students = await Student.create(req.body);
-  res.status(201).json({
-    status: "success",
-    students,
-  });
+  try {
+    const salt = await bcrypt.genSalt(10);
+    const hash_pass = await bcrypt.hash(req.body.password, salt);
+    const student = await Student.create({
+      ...req.body,
+      password: hash_pass,
+    });
+    res.status(201).json({
+      status: "success",
+      student,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      message: error.message,
+    });
+  }
 };
 
 /**
