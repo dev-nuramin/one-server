@@ -1,7 +1,7 @@
 const createError = (status, msg) => {
   const err = new Error();
-  err.status = 401;
-  err.message = "No student data found";
+  err.status = status;
+  err.message = msg;
   return err
 }
 

@@ -1,12 +1,13 @@
 // express error handler
 const errorHandler = (error, req, res, next) => {
-   const errorStatus = error.status || 500;
-   const errorMessage = error.message || "Something went wrong!";
+   const err = error || {};
+   const errorStatus = err.status || 500;
+   const errorMessage = err.message || "Something went wrong!";
    return res.status(errorStatus).json({
       success: false,
       status: errorStatus,
       message: errorMessage,
-      stack: error.stack,
+      stack: err.stack,
    });
 }
 

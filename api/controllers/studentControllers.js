@@ -10,6 +10,7 @@
 // Import necessary modules
 import Student from "../models/Student.js";
 import bcrypt from "bcryptjs";
+import createError from '../controllers/createError.js'
 /**
  * @function getAllStudent
  * @description Retrieves all student records from the database.
@@ -22,7 +23,7 @@ export const getAllStudents = async (req, res, next) => {
     const student = await Student.find();
     res.status(200).json(student);
   } catch (error) {
-    next(error)
+    next(error);
   }
 };
 
@@ -33,7 +34,7 @@ export const getAllStudents = async (req, res, next) => {
  * @route /api/students
  */
 
-export const createStudent = async (req, res) => {
+export const createStudent = async (req, res, next) => {
   try {
     const salt = await bcrypt.genSalt(10);
     const hash_pass = await bcrypt.hash(req.body.password, salt);
@@ -46,10 +47,7 @@ export const createStudent = async (req, res) => {
       student,
     });
   } catch (error) {
-    res.status(400).json({
-      status: "fail",
-      message: error.message,
-    });
+    next(error);
   }
 };
 
@@ -61,13 +59,24 @@ export const createStudent = async (req, res) => {
  *
  */
 
-export const getSingleStudent = async (req, res) => {
-  const { id } = req.params;
-  const student = await Student.findById(id);
-  res.status(200).json({
-    status: "success",
-    student,
-  });
+export const getSingleStudent = async (req, res, next) => {
+  try {
+    // Extract the student ID from the request parameters
+    const { id } = req.params;
+    const student = await Student.findById(id);
+    if (!student) {
+      next(createError(404, "Single student not found"));
+      return;
+    }
+    if (student) {
+      res.status(200).json({
+        status: "success",
+        student,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
 };
 
 /**
@@ -77,16 +86,20 @@ export const getSingleStudent = async (req, res) => {
  * @route /api/students:id
  */
 
-export const deleteStudent = async (req, res) => {
-  const { id } = req.params;
-  const student = await Student.findByIdAndDelete(id);
-  res.status(200).json(
-    {
-      status: "success",
-      message: "Student deleted successfully",
-    },
-    student
-  );
+export const deleteStudent = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const student = await Student.findByIdAndDelete(id);
+    res.status(200).json(
+      {
+        status: "success",
+        message: "Student deleted successfully",
+      },
+      student
+    );
+  } catch (error) {
+    next(error);
+  }
 };
 
 /**
@@ -96,13 +109,19 @@ export const deleteStudent = async (req, res) => {
  * @route /api/students:id
  */
 
-export const updateStudent = async (req, res) => {
-  const { id } = req.params;
-  const student = await Student.findByIdAndUpdate(id, req.body, { new: true });
-  res.status(200).json({
-    status: "success",
-    student,
-  });
+export const updateStudent = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const student = await Student.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+    res.status(200).json({
+      status: "success",
+      student,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 /**
@@ -112,11 +131,17 @@ export const updateStudent = async (req, res) => {
  * @route /api/students:id
  */
 
-export const patchStudent = async (req, res) => {
-  const { id } = req.params;
-  const student = await Student.findByIdAndUpdate(id, req.body, { new: true });
-  res.status(200).json({
-    status: "success",
-    student,
-  });
+export const patchStudent = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const student = await Student.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+    res.status(200).json({
+      status: "success",
+      student,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
