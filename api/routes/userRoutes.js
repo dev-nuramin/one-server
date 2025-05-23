@@ -11,16 +11,20 @@ import {
 } from "../controllers/userControllers.js";
 import { userLogin } from "../controllers/userLogin/userLogin.js";
 import { userRegister } from "../controllers/userLogin/userRegister.js";
+import { authMiddleware } from "../middlewares/authMiddleware.js";
+import { userMiddleware } from "../middlewares/userMiddleware.js";
+import adminMiddleware from "../middlewares/adminMiddleware.js";
+
 
 const router = express.Router();
 
-router.route("/").get(getAllUsers).post(createUser);
+router.route("/").get(adminMiddleware, getAllUsers).post(authMiddleware, createUser);
 router
   .route("/:id")
-  .get(getSingleUser)
-  .put(updateUser)
-  .delete(deleteUser)
-  .patch(patchUser);
+  .get(userMiddleware, getSingleUser)
+  .put(userMiddleware, updateUser)
+  .delete(userMiddleware, deleteUser)
+  .patch(userMiddleware, patchUser);
 
 
   // user login and registaer route
