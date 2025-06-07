@@ -8,13 +8,11 @@ const Login = () => {
       <div className="login_container">
         <div className="login_wrapper">
           <a href="#" className="login_logo_link">
-            <a href="https://imgbb.com/">
-              <img
-                src="https://i.ibb.co/Q7vRZbD4/Screenshot-2.png"
-                alt="Screenshot-2"
-                border="0"
-              />
-            </a>
+            <img
+              src="https://i.ibb.co/rKF8Q2mk/insta-removebg-preview.png"
+              alt="insta-removebg-preview"
+              border="0"
+            />
           </a>
           <form action="#" className="login_form">
             <input
@@ -34,12 +32,21 @@ const Login = () => {
           </div>
           <div className="login_fb">
             <a href="#" className="login_fb_link">
-              <a href="#">
+              <a href="#" className="fb_logo">
                 <BiLogoFacebookSquare />
-                Log in with facebook
               </a>
+              Log in with facebook
             </a>
           </div>
+          <div className="forgot_password">
+            <a href="#">Forgot password?</a>
+          </div>
+        </div>
+
+        <div className="signup_wrapper">
+          <span>
+            Don't have account <a href="">Sign up</a>
+          </span>
         </div>
       </div>
     </>
