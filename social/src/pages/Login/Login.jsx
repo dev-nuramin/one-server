@@ -1,6 +1,7 @@
 import React from "react";
 import { BiLogoFacebookSquare } from "react-icons/bi";
 import "./Login.scss"; // Importing styles specific to the Login component
+import { Link } from "react-router-dom";
 // This component renders a login form with fields for username and password, and a button to log in.
 const Login = () => {
   return (
@@ -45,8 +46,25 @@ const Login = () => {
 
         <div className="signup_wrapper">
           <span>
-            Don't have account <a href="">Sign up</a>
+            Don't have account <Link to="/register">Sign up</Link>
           </span>
+        </div>
+        <div className="get_the_app">
+          <span>Get the app</span>
+          <div className="get_the_app_wrapper">
+            <a href="#">
+              <img
+                src="https://i.ibb.co/6n1x5f0/insta-app-store.png"
+                alt="app-store"
+              />
+            </a>
+            <a href="#">
+              <img
+                src="https://i.ibb.co/7y3b2zH/insta-google-play.png"
+                alt="google-play"
+              />
+            </a>
+          </div>
         </div>
       </div>
     </>
